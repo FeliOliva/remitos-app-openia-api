@@ -8,11 +8,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const RoutesClientes = require("../../routes/clientRoutes");
+const Routes_Cuentas_Corrientes = require("../../routes/cuenta_corrientesRoutes");
 const RoutesRemitos = require("../../routes/remitoRoutes");
-const RoutesDetalleRemitos = require("../../routes/detalleRemitoRoutes");
 const RoutesEntregas = require("../../routes/entregaRoutes");
-const RoutesDetalleEntregas = require("../../routes/detalleEntregaRoutes");
-app.use("/api", RoutesClientes, RoutesRemitos, RoutesDetalleRemitos, RoutesEntregas, RoutesDetalleEntregas);
+app.use("/api", RoutesClientes, Routes_Cuentas_Corrientes, RoutesRemitos, RoutesEntregas);
 
 app.all("*", (req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");

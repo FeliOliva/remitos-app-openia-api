@@ -8,53 +8,41 @@ datasource db {
 }
 
 model Cliente {
-  id            Int       @id @default(autoincrement())
-  nombre        String
-  apellido      String
-  fechaCreacion DateTime  @default(now())
-  estado        Int       @default(1)
-  remitos       Remito[]
-  entregas      Entrega[]
+  id               Int                @id @default(autoincrement())
+  nombre           String
+  apellido         String
+  fechaCreacion    DateTime           @default(now())
+  estado           Int                @default(1)
+  Cuenta_Corriente Cuenta_Corriente[]
+}
+
+model Cuenta_Corriente {
+  id        Int       @id @default(autoincrement())
+  clienteId Int
+  subTotal  Float     @default(0)
+  entrega   Float     @default(0)
+  total     Float     @default(0)
+  estado    Int       @default(1)
+  cliente   Cliente?  @relation(fields: [clienteId], references: [id])
+  remitos   Remito[]
+  entregas  Entrega[]
 }
 
 model Remito {
-  id             Int             @id @default(autoincrement())
-  subTotal       Float           @default(0)
-  entregaId      Int // Relacionar siempre un remito con una entrega
-  totalEntrega   Float           @default(0)
-  clienteId      Int // Relacionar siempre un remito con un cliente
-  total          Float           @default(0)
-  estado         Int             @default(1)
-  detallesRemito DetalleRemito[]
-  cliente        Cliente         @relation(fields: [clienteId], references: [id])
-  entrega        Entrega         @relation(fields: [entregaId], references: [id])
-}
-
-model DetalleRemito {
-  id       Int      @id @default(autoincrement())
-  importe  Float
-  fecha    DateTime
-  remitoId Int
-  estado   Int      @default(1)
-  remito   Remito   @relation(fields: [remitoId], references: [id])
+  id                Int               @id @default(autoincrement())
+  importe           Float
+  saldo             Float? // Nueva columna para guardar el saldo restante
+  fecha             DateTime
+  cuentaCorrienteId Int
+  estado            Int               @default(1) // 0 para cancelado
+  cuentaCorriente   Cuenta_Corriente? @relation(fields: [cuentaCorrienteId], references: [id])
 }
 
 model Entrega {
-  id               Int              @id @default(autoincrement())
-  fechaUltimaModif DateTime         @updatedAt
-  total            Float            @default(0)
-  estado           Int              @default(1)
-  clienteId        Int 
-  detallesEntrega  EntregaDetalle[]
-  remitos          Remito[]
-  cliente          Cliente          @relation(fields: [clienteId], references: [id])
-}
-
-model EntregaDetalle {
-  id        Int      @id @default(autoincrement())
-  importe   Float
-  fecha     DateTime
-  estado    Int      @default(1)
-  entregaId Int
-  entrega   Entrega  @relation(fields: [entregaId], references: [id])
+  id                Int               @id @default(autoincrement())
+  fechaUltimaModif  DateTime          @updatedAt
+  total             Float             @default(0)
+  estado            Int               @default(1)
+  cuentaCorrienteId Int
+  cuentaCorriente   Cuenta_Corriente? @relation(fields: [cuentaCorrienteId], references: [id])
 }

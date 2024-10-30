@@ -13,7 +13,8 @@ const getAllClients = async () => {
 
 const addClient = async (nombre, apellido) => {
     try {
-        const client = await prisma.$transaction(async (prisma) => {
+        const client = await prisma.$transaction(async () => {
+            // Crear el nuevo cliente
             const newClient = await prisma.cliente.create({
                 data: {
                     nombre,
@@ -21,24 +22,19 @@ const addClient = async (nombre, apellido) => {
                 }
             });
 
-            const newEntrega = await prisma.entrega.create({
+            // Crear la cuenta corriente asociada al nuevo cliente
+            const newCuentaCorriente = await prisma.cuenta_Corriente.create({
                 data: {
                     clienteId: newClient.id,
                 }
             });
 
-            const newRemito = await prisma.remito.create({
-                data: {
-                    clienteId: newClient.id,
-                    entregaId: newEntrega.id,
-                }
-            });
-            return { newClient, newRemito, newEntrega };
+            return { newClient, newCuentaCorriente };
         });
 
         return client;
     } catch (error) {
-        throw error;
+        throw new Error("Error al agregar cliente y cuenta corriente: " + error.message);
     }
 };
 

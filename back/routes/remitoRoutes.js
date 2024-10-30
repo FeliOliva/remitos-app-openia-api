@@ -2,7 +2,11 @@ const express = require("express");
 const router = express.Router();
 const remitoControllers = require("../controllers/remitoControllers");
 
-router.get("/remitos", remitoControllers.getAllRemitos);
-router.get("/remitos/:id", remitoControllers.getRemitoByID);
+router.get("/remito", remitoControllers.getAllRemitos);
+router.get("/remito/:id", remitoControllers.getRemitoByID);
+router.post("/remito", remitoControllers.addRemito);
+router.delete("/remito/:id", remitoControllers.dropRemito);
+router.post("/remito/:id", remitoControllers.upRemito);
+router.put("/remito/:id", remitoControllers.updateRemito);
 
 module.exports = router;

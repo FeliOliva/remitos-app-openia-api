@@ -25,8 +25,38 @@ const getEntregaByID = async (req, res) => {
     }
 };
 
+const addEntrega = async (req, res) => {
+    try {
+        const { total, cuentaCorrienteId } = req.body;
+        if (!total || !cuentaCorrienteId) {
+            return res.status(400).json({ error: 'Todos los campos son obligatorios' });
+        }
+        const entrega = await entregaService.addEntrega({ total, cuentaCorrienteId });
+        res.json(entrega);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+const updateEntrega = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { total, cuentaCorrienteId } = req.body;
+        if (!id || !total || !cuentaCorrienteId) {
+            return res.status(400).json({ error: 'Todos los campos son obligatorios' });
+        }
+        const entrega = await entregaService.updateEntrega(id, { total, cuentaCorrienteId });
+        res.json(entrega);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
 
 module.exports = {
     getAllEntregas,
     getEntregaByID,
+    addEntrega,
+    updateEntrega
+
 }

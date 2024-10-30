@@ -20,6 +20,7 @@ const addClient = async (req, res) => {
         res.json(client);
     } catch (error) {
         res.status(500).json({ error: error.message });
+        console.log(error);
     }
 }
 
