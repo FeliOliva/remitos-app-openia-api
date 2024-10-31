@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Button, Input, Spin, message as antMessage } from "antd";
+import "../App.css";
 
 const ChatWidget = ({ onSendMessage }) => {
   const [userMessage, setUserMessage] = useState("");
@@ -23,7 +24,7 @@ const ChatWidget = ({ onSendMessage }) => {
         // Agregar la respuesta del bot a la historia del chat
         const botMessage = {
           sender: "bot",
-          text: response.message || response.error,
+          text: response.message,
         };
         setChatHistory((prevHistory) => [...prevHistory, botMessage]);
       }
@@ -33,49 +34,30 @@ const ChatWidget = ({ onSendMessage }) => {
   };
 
   return (
-    <div
-      style={{
-        position: "fixed",
-        bottom: 16,
-        right: 16,
-        width: 300,
-        padding: 16,
-        borderRadius: 8,
-        boxShadow: "0 0 8px rgba(0,0,0,0.1)",
-        backgroundColor: "#fff",
-        zIndex: 1000, // Asegura que el chat esté por encima de otros elementos
-      }}
-    >
-      <div style={{ maxHeight: 300, overflowY: "auto", marginBottom: 8 }}>
+    <div className="chat-widget">
+      <div className="chat-history">
         {chatHistory.map((msg, index) => (
-          <div
-            key={index}
-            style={{ textAlign: msg.sender === "user" ? "right" : "left" }}
-          >
-            <p
-              style={{
-                margin: 0,
-                padding: "4px 8px",
-                backgroundColor: msg.sender === "user" ? "#e6f7ff" : "#f5f5f5",
-                borderRadius: 4,
-              }}
-            >
-              {msg.text}
-            </p>
+          <div key={index} className={`chat-message ${msg.sender}`}>
+            <p>{msg.text}</p>
           </div>
         ))}
         {loading && (
-          <div style={{ display: "flex", justifyContent: "center" }}>
+          <div className="chat-loading">
             <Spin tip="Pensando..." />
           </div>
         )}
       </div>
       <Input
+        className="chat-input"
         placeholder="Escribe tu mensaje..."
         value={userMessage}
         onChange={(e) => setUserMessage(e.target.value)}
         onPressEnter={handleMessageSend}
-        addonAfter={<Button onClick={handleMessageSend}>Enviar</Button>}
+        addonAfter={
+          <Button type="primary" onClick={handleMessageSend}>
+            Enviar
+          </Button>
+        }
       />
     </div>
   );
