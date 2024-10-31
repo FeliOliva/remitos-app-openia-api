@@ -8,5 +8,6 @@ router.post("/clients", clientControllers.addClient);
 router.delete("/clients/:id", clientControllers.dropClient);
 router.post("/clients/:id", clientControllers.upClient);
 router.put("/clients/:id", clientControllers.updateClients);
+router.get("/search", clientControllers.searchClients);
 
 module.exports = router;

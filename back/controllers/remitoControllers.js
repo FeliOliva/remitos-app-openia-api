@@ -90,6 +90,20 @@ const updateRemito = async (req, res) => {
     }
 };
 
+const getRemitosByCuentaCorrienteID = async (req, res) => {
+    try {
+        const { id } = req.params
+        if (!id) {
+            return res.status(400).json({ error: "ID es requerido" })
+        }
+        const remitos = await remitoService.getRemitosByCuentaCorrienteID(id);
+        res.json(remitos);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: 'Error al obtener los remitos' });
+    }
+}
+
 
 module.exports = {
     getAllRemitos,
@@ -97,5 +111,6 @@ module.exports = {
     getRemitoByID,
     dropRemito,
     upRemito,
-    updateRemito
+    updateRemito,
+    getRemitosByCuentaCorrienteID
 }

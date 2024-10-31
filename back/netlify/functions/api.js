@@ -11,7 +11,8 @@ const RoutesClientes = require("../../routes/clientRoutes");
 const Routes_Cuentas_Corrientes = require("../../routes/cuenta_corrientesRoutes");
 const RoutesRemitos = require("../../routes/remitoRoutes");
 const RoutesEntregas = require("../../routes/entregaRoutes");
-app.use("/api", RoutesClientes, Routes_Cuentas_Corrientes, RoutesRemitos, RoutesEntregas);
+const RoutesChat = require("../../routes/chatRoutes");
+app.use("/api", RoutesClientes, Routes_Cuentas_Corrientes, RoutesRemitos, RoutesEntregas, RoutesChat);
 
 app.all("*", (req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");

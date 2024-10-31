@@ -8,5 +8,6 @@ router.post("/remito", remitoControllers.addRemito);
 router.delete("/remito/:id", remitoControllers.dropRemito);
 router.post("/remito/:id", remitoControllers.upRemito);
 router.put("/remito/:id", remitoControllers.updateRemito);
+router.get("/remito/cuenta_corriente/:id", remitoControllers.getRemitosByCuentaCorrienteID);
 
 module.exports = router;

@@ -75,10 +75,26 @@ const updateClient = async (id, data) => {
     }
 };
 
+const searchClients = async (nombre, apellido) => {
+    try {
+        const clients = await prisma.cliente.findMany({
+            where: {
+                nombre: {
+                    contains: nombre
+                },
+                apellido: apellido ? { contains: apellido } : undefined
+            }
+        });
+        return clients;
+    } catch (error) {
+        throw error;
+    }
+};
 module.exports = {
     getAllClients,
     addClient,
     getClientByID,
     updateClientStatus,
-    updateClient
+    updateClient,
+    searchClients
 }

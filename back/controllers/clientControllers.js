@@ -82,11 +82,33 @@ const updateClients = async (req, res) => {
     }
 };
 
+const searchClients = async (req, res) => {
+    try {
+        const { nombre, apellido } = req.query;
+        console.log(nombre, apellido);
+        if (!nombre) {
+            return res.status(400).json({ error: 'Nombre es requerido' });
+        }
+
+        const clients = await clientService.searchClients(nombre, apellido);
+        if (clients.length === 0) {
+            return res.status(404).json({ error: "Cliente no encontrado" });
+        }
+
+        res.json(clients);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: error.message });
+    }
+};
+
+
 module.exports = {
     getAllClients,
     addClient,
     getClientByID,
     dropClient,
     upClient,
-    updateClients
+    updateClients,
+    searchClients
 }
