@@ -71,7 +71,6 @@ const updateClients = async (req, res) => {
         const { id } = req.params;
         const { nombre, apellido } = req.body;
         if (!id) return res.status(400).json({ error: "ID es requerido" });
-
         const client = await clientService.getClientByID(id);
         if (!client) return res.status(404).json({ error: "Cliente no encontrado" });
 

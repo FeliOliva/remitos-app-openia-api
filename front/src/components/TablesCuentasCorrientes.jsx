@@ -1,53 +1,29 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React, { useContext, useState } from "react";
 import SelectClientes from "./SelectClientes";
 import { Modal, Button, Table, Row, Col } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
+import { DataContext } from "../context/DataContext";
 
 const TablesCuentasCorrientes = () => {
   const [cliente, setCliente] = useState(null);
-  const [remitos, setRemitos] = useState([]);
+  const { remitos, fetchRemitos } = useContext(DataContext);
 
   const handleSelectedClient = () => {
+    console.log("Cliente seleccionado:", cliente);
     if (!cliente) {
       Modal.warning({
         title: "Advertencia",
-        content: "Debe seleccionar un cliente",
+        content: "Debe seleccionar un cliente con cuenta corriente",
         icon: <ExclamationCircleOutlined />,
-        timer: 3,
       });
     } else {
-      fetchCuentasCorrientes(cliente);
+      const cuentaCorrienteId = cliente;
+      fetchRemitos(cuentaCorrienteId);
     }
   };
-
   const handleClienteChange = (cliente) => {
     setCliente(cliente);
-  };
-
-  const fetchCuentasCorrientes = async (cliente_id) => {
-    try {
-      const response = await axios.get(
-        `http://localhost:3001/api/cuentas_corrientes/cliente/${cliente_id}`
-      );
-      const cuentas_corrientes = response.data;
-      fetchRemitos(cuentas_corrientes[0].id);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const fetchRemitos = async (cuenta_corriente_id) => {
-    console.log("cuenta corriente id", cuenta_corriente_id);
-    try {
-      const response = await axios.get(
-        `http://localhost:3001/api/remito/cuenta_corriente/${cuenta_corriente_id}`
-      );
-      setRemitos(response.data);
-    } catch (error) {
-      console.log(error);
-    }
   };
 
   const columns = [

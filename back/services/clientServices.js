@@ -4,21 +4,39 @@ const prisma = new PrismaClient();
 
 const getAllClients = async () => {
   try {
-    const clients = await prisma.cliente.findMany({});
-    return clients;
+    const clients = await prisma.cliente.findMany({
+      include: {
+        Cuenta_Corriente: {
+          select: {
+            id: true, // Solo selecciona el id de la cuenta corriente
+          },
+        },
+      },
+    });
+
+    // Mapea los datos para agregar el primer id de cuenta corriente como 'cuentaCorrienteId'
+    const clientsWithCuentaCorrienteId = clients.map((client) => ({
+      ...client,
+      cuentaCorrienteId: client.Cuenta_Corriente[0]?.id || null, // Toma el primer id o null si no hay cuenta
+    }));
+
+    return clientsWithCuentaCorrienteId;
   } catch (error) {
     throw error;
   }
 };
 
+
 const addClient = async (nombre, apellido) => {
   try {
+    const nombreMayus = nombre.toUpperCase();
+    const apellidoMayus = apellido.toUpperCase();
     const client = await prisma.$transaction(async () => {
       // Crear el nuevo cliente
       const newClient = await prisma.cliente.create({
         data: {
-          nombre,
-          apellido,
+          nombre: nombreMayus,
+          apellido: apellidoMayus,
         },
       });
 
@@ -65,9 +83,14 @@ const updateClientStatus = async (id, estado) => {
 
 const updateClient = async (id, data) => {
   try {
+    const nombreMayus = data.nombre.toUpperCase();
+    const apellidoMayus = data.apellido.toUpperCase();
     const client = await prisma.cliente.update({
       where: { id: parseInt(id) },
-      data,
+      data: {
+        nombre: nombreMayus,
+        apellido: apellidoMayus,
+      },
     });
     return client;
   } catch (error) {

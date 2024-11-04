@@ -145,11 +145,21 @@ const updateEntrega = async (id, { total, cuentaCorrienteId }) => {
     }
 };
 
+const getEntregaByCuentaCorrienteId = async (id) => {
+    try {
+        const entrega = await prisma.entrega.findMany({ where: { cuentaCorrienteId: parseInt(id, 10) } });
+        return entrega;
+    } catch (error) {
+        throw new Error("Error al obtener la entrega por ID de cuenta corriente");
+    }
+}
+
 
 module.exports = {
     getAllEntregas,
     getEntregaByID,
     addEntrega,
-    updateEntrega
+    updateEntrega,
+    getEntregaByCuentaCorrienteId
 }
 

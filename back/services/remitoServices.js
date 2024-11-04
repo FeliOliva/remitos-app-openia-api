@@ -116,19 +116,19 @@ const updateRemito = async (id, { importe, fecha }) => {
     }
 };
 
-const getRemitosByCuentaCorrienteID = async (id) => {
-    try {
-        const remitos = await prisma.remito.findMany({ where: { cuentaCorrienteId: parseInt(id, 10) } });
-        return remitos;
-    } catch (error) {
-        throw error;
-    }
-}
+// const getRemitosByCuentaCorrienteID = async (id) => {
+//     try {
+//         const remitos = await prisma.remito.findMany({ where: { cuentaCorrienteId: parseInt(id, 10) } });
+//         return remitos;
+//     } catch (error) {
+//         throw error;
+//     }
+// }
 module.exports = {
     getAllRemitos,
     getRemitoByID,
     updateRemitoStatus,
     addRemito,
     updateRemito,
-    getRemitosByCuentaCorrienteID
+    // getRemitosByCuentaCorrienteID
 };

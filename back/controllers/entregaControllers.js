@@ -52,11 +52,29 @@ const updateEntrega = async (req, res) => {
     }
 };
 
+const getEntregaByCuentaCorrienteId = async (req, res) => {
+    try {
+        const { id } = req.params;
+        if (!id) {
+            return res.status(400).json({ error: 'ID de cuenta corriente es requerido' });
+        }
+        console.log(id);
+        const entrega = await entregaService.getEntregaByCuentaCorrienteId(id);
+        if (!entrega) {
+            return res.status(404).json({ error: 'Entrega no encontrada' });
+        }
+        res.json(entrega);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+        console.log(error);
+    }
+};
+
 
 module.exports = {
     getAllEntregas,
     getEntregaByID,
     addEntrega,
-    updateEntrega
-
+    updateEntrega,
+    getEntregaByCuentaCorrienteId
 }

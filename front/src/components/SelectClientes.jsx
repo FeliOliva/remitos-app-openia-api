@@ -1,23 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { Select } from "antd";
-import axios from "axios";
+import { DataContext } from "../context/DataContext";
 
 const SelectClientes = ({ value, onChangeCliente, onInputChange }) => {
-  const [clientes, setClientes] = useState([]);
-
-  useEffect(() => {
-    const fetchClientes = async () => {
-      try {
-        const response = await axios.get("http://localhost:3001/api/clients");
-        setClientes(response.data);
-      } catch (error) {
-        console.error("Error fetching clientes:", error);
-      }
-    };
-
-    fetchClientes();
-  }, []);
-
+  const { clientes, fetchClientes } = useContext(DataContext);
   const handleSearchCliente = (value) => {
     console.log("search:", value);
   };
@@ -35,7 +21,7 @@ const SelectClientes = ({ value, onChangeCliente, onInputChange }) => {
     .filter((cliente) => cliente.estado === 1)
     .map((cliente) => ({
       label: cliente.nombre + " " + cliente.apellido,
-      value: cliente.id,
+      value: cliente.Cuenta_Corriente[0]?.id,
     }));
 
   return (
