@@ -1,11 +1,11 @@
 require("dotenv").config();
 const OpenAI = require("openai");
 const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
+  apiKey: process.env.OPENAI_API_KEY,
 });
 
 const getMessaged = async (message) => {
-    const prompt = `
+  const prompt = `
    Eres un asistente de sistema de cuentas corrientes. Responde con un JSON en el siguiente formato, sin texto adicional.
    
    Ejemplos de acciones:
@@ -18,26 +18,26 @@ const getMessaged = async (message) => {
    Usuario: ${message}
   `;
 
-    const response = await openai.chat.completions.create({
-        model: "gpt-4",
-        messages: [
-            { role: "system", content: prompt },
-            { role: "user", content: message },
-        ],
-        max_tokens: 100,
-    });
+  const response = await openai.chat.completions.create({
+    model: "gpt-4",
+    messages: [
+      { role: "system", content: prompt },
+      { role: "user", content: message },
+    ],
+    max_tokens: 100,
+  });
 
-    const aiMessage = response.choices[0].message.content.trim();
-    try {
-        const parsedMessage = JSON.parse(aiMessage);
-        if (!parsedMessage.action || !parsedMessage.data) {
-            throw new Error("Respuesta no tiene la estructura esperada.");
-        }
-        return parsedMessage;
-    } catch (error) {
-        console.error("Error al interpretar respuesta de OpenAI:", aiMessage);
-        throw new Error("Respuesta no válida de OpenAI.");
+  const aiMessage = response.choices[0].message.content.trim();
+  try {
+    const parsedMessage = JSON.parse(aiMessage);
+    if (!parsedMessage.action || !parsedMessage.data) {
+      throw new Error("Respuesta no tiene la estructura esperada.");
     }
+    return parsedMessage;
+  } catch (error) {
+    console.error("Error al interpretar respuesta de OpenAI:", aiMessage);
+    throw new Error("Respuesta no válida de OpenAI.");
+  }
 };
 
 module.exports = { getMessaged };

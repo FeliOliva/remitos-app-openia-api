@@ -17,8 +17,8 @@ const Chat = () => {
 
       // Llama a todas las funciones de fetch para actualizar los datos
       fetchClientes();
-      fetchRemitos();
-      fetchEntregas();
+      // fetchRemitos();
+      // fetchEntregas();
 
       // Llama al callback con la respuesta del servidor
       callback(response.data);

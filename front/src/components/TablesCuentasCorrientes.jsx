@@ -4,13 +4,13 @@ import { Modal, Button, Table, Row, Col } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 import { DataContext } from "../context/DataContext";
+import TablaEntregas from "./TablaEntregas";
 
 const TablesCuentasCorrientes = () => {
   const [cliente, setCliente] = useState(null);
   const { remitos, fetchRemitos } = useContext(DataContext);
 
   const handleSelectedClient = () => {
-    console.log("Cliente seleccionado:", cliente);
     if (!cliente) {
       Modal.warning({
         title: "Advertencia",
@@ -18,15 +18,15 @@ const TablesCuentasCorrientes = () => {
         icon: <ExclamationCircleOutlined />,
       });
     } else {
-      const cuentaCorrienteId = cliente;
-      fetchRemitos(cuentaCorrienteId);
+      fetchRemitos(cliente);
     }
   };
+
   const handleClienteChange = (cliente) => {
     setCliente(cliente);
   };
 
-  const columns = [
+  const columnsRemitos = [
     {
       title: "Fecha",
       dataIndex: "fecha",
@@ -70,10 +70,16 @@ const TablesCuentasCorrientes = () => {
           <Col span={24}>
             <Table
               dataSource={remitos}
-              columns={columns}
+              columns={columnsRemitos}
               rowKey={(remito) => remito.id}
               pagination={{ pageSize: 5 }}
             />
+          </Col>
+        )}
+        {cliente && (
+          <Col span={24}>
+            <h3>Entregas del Cliente</h3>
+            <TablaEntregas cuentaCorrienteId={cliente} />
           </Col>
         )}
       </Row>
