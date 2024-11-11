@@ -10,18 +10,15 @@ const ChatWidget = ({ onSendMessage }) => {
   const handleMessageSend = async () => {
     if (!userMessage.trim()) return;
 
-    // Agregar el mensaje del usuario a la historia del chat
     const newUserMessage = { sender: "user", text: userMessage };
     setChatHistory((prevHistory) => [...prevHistory, newUserMessage]);
     setLoading(true);
 
-    // Llamar a la función de envío de mensajes
     onSendMessage(userMessage, (response) => {
       setLoading(false);
       if (response.error) {
         antMessage.error("Error: " + response.error);
       } else {
-        // Agregar la respuesta del bot a la historia del chat
         const botMessage = {
           sender: "bot",
           text: response.message,

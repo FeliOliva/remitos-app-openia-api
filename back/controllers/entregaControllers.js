@@ -70,7 +70,6 @@ const getEntregaByCuentaCorrienteId = async (req, res) => {
         .status(400)
         .json({ error: "ID de cuenta corriente es requerido" });
     }
-    console.log(id);
     const entrega = await entregaService.getEntregaByCuentaCorrienteId(id);
     if (!entrega) {
       return res.status(404).json({ error: "Entrega no encontrada" });

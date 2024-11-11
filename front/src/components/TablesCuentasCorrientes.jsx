@@ -5,10 +5,12 @@ import { ExclamationCircleOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 import { DataContext } from "../context/DataContext";
 import TablaEntregas from "./TablaEntregas";
+import "../App.css";
 
 const TablesCuentasCorrientes = () => {
   const [cliente, setCliente] = useState(null);
-  const { remitos, fetchRemitos } = useContext(DataContext);
+  const { remitos, fetchRemitos, entregas, fetchEntregas } =
+    useContext(DataContext);
 
   const handleSelectedClient = () => {
     if (!cliente) {
@@ -19,6 +21,7 @@ const TablesCuentasCorrientes = () => {
       });
     } else {
       fetchRemitos(cliente);
+      fetchEntregas(cliente);
     }
   };
 
@@ -38,11 +41,7 @@ const TablesCuentasCorrientes = () => {
       dataIndex: "importe",
       key: "importe",
     },
-    {
-      title: "Saldo",
-      dataIndex: "saldo",
-      key: "saldo",
-    },
+    { title: "Saldo", dataIndex: "saldo", key: "saldo" },
     {
       title: "Estado",
       dataIndex: "estado",
@@ -54,32 +53,32 @@ const TablesCuentasCorrientes = () => {
   return (
     <div style={{ padding: "16px" }}>
       <Row gutter={[16, 16]}>
-        <Col span={24} md={8}>
+        <Col xs={24} md={8}>
           <SelectClientes
             value={cliente}
             onChangeCliente={handleClienteChange}
             onInputChange={setCliente}
           />
         </Col>
-        <Col span={24} md={4}>
+        <Col xs={24} md={4}>
           <Button type="primary" onClick={handleSelectedClient} block>
             Buscar
           </Button>
         </Col>
         {remitos.length > 0 && (
-          <Col span={24}>
+          <Col xs={24}>
             <Table
               dataSource={remitos}
               columns={columnsRemitos}
               rowKey={(remito) => remito.id}
               pagination={{ pageSize: 5 }}
+              scroll={{ x: "100%" }}
             />
           </Col>
         )}
-        {cliente && (
-          <Col span={24}>
-            <h3>Entregas del Cliente</h3>
-            <TablaEntregas cuentaCorrienteId={cliente} />
+        {entregas.length > 0 && (
+          <Col xs={24}>
+            <TablaEntregas entregas={entregas} />
           </Col>
         )}
       </Row>

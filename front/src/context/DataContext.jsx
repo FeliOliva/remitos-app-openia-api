@@ -37,6 +37,7 @@ export const DataProvider = ({ children }) => {
         `http://localhost:3001/api/entregasxcuenta_corriente/${cuentaCorrienteId}`
       );
       setEntregas(response.data);
+      console.log("Entregas:", response.data);
     } catch (error) {
       console.error("Error fetching entregas:", error);
     }

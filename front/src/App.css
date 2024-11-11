@@ -36,20 +36,7 @@
     transform: rotate(360deg);
   }
 }
-/* App.css */
-.chat-widget {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 300px;
-  max-height: 400px;
-  border-radius: 8px;
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
-  background-color: white;
-  padding: 8px;
-  overflow: hidden;
-}
-/* App.css */
+
 .chat-widget {
   position: fixed;
   bottom: 20px;
@@ -66,6 +53,7 @@
   transition: transform 0.3s ease-in-out;
 }
 
+/* Chat history messages */
 .chat-history {
   flex: 1;
   padding: 16px;
@@ -98,12 +86,14 @@
   color: #333;
 }
 
+/* Loading spinner */
 .chat-loading {
   display: flex;
   justify-content: center;
   margin-top: 8px;
 }
 
+/* Chat input */
 .chat-input {
   padding: 10px;
   border-top: 1px solid #e0e0e0;
@@ -113,6 +103,7 @@
   border-radius: 12px;
 }
 
+/* Fade-in animation */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -124,23 +115,53 @@
   }
 }
 
-/* Mobile styles */
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+  .chat-widget {
+    width: 90%;
+    right: 5%;
+    bottom: 10px;
+    max-height: 400px;
+    border-radius: 8px;
+  }
+}
+
 @media (max-width: 480px) {
   .chat-widget {
+    position: static;
     width: 100%;
-    right: 0;
-    bottom: 0;
+    max-height: 300px;
     border-radius: 0;
-    height: 100%;
-    max-height: 100%;
-    padding: 0;
+    box-shadow: none;
+    margin-top: auto;
   }
 
   .chat-history {
-    padding: 12px;
+    padding: 8px;
+  }
+}
+/* Estilo general para el contenedor de la tabla */
+.table-container {
+  overflow-x: auto;
+}
+
+/* Ajuste de la tabla en pantallas pequeñas */
+@media (max-width: 768px) {
+  .ant-table-thead > tr > th,
+  .ant-table-tbody > tr > td {
+    font-size: 12px; /* Texto más pequeño */
+    padding: 8px; /* Espaciado reducido */
   }
 
-  .chat-input {
-    padding: 8px;
+  /* Ocultar columnas en pantallas pequeñas si es necesario */
+  .ant-table-cell:nth-child(3), /* Por ejemplo, la tercera columna */
+  .ant-table-cell:nth-child(4) {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .ant-table {
+    font-size: 10px; /* Texto aún más pequeño en pantallas extra pequeñas */
   }
 }

@@ -1,17 +1,8 @@
-import React, { useEffect, useContext } from "react";
+import React from "react";
 import { Table } from "antd";
 import dayjs from "dayjs";
-import { DataContext } from "../context/DataContext";
 
-const TablaEntregas = ({ cuentaCorrienteId }) => {
-  const { entregas, fetchEntregas } = useContext(DataContext);
-
-  useEffect(() => {
-    if (cuentaCorrienteId) {
-      fetchEntregas(cuentaCorrienteId);
-    }
-  }, [cuentaCorrienteId, fetchEntregas]);
-
+const TablaEntregas = ({ entregas }) => {
   const columns = [
     {
       title: "Fecha Última Modificación",
@@ -38,6 +29,7 @@ const TablaEntregas = ({ cuentaCorrienteId }) => {
       columns={columns}
       rowKey={(entrega) => entrega.id}
       pagination={{ pageSize: 5 }}
+      scroll={{ x: "100%" }}
     />
   );
 };
